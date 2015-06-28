@@ -4,65 +4,104 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.net.*;
 import java.util.*;
-import java.util.jar.JarFile;
+import java.util.jar.*;
+
+import static java.util.Collections.emptyList;
 
 public class PrinterRunner {
     public static void main(String[] args) throws IOException, URISyntaxException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> resources = classLoader.getResources("");
+        for (Package p : Package.getPackages()) {
+//            if (p.getName().equals("com.foo")) {
+                List<Class> classesForPackage = getClassesForPackage(p);
 
-        while (resources.hasMoreElements()) {
-            URL url = resources.nextElement();
-            System.out.println(urlit);
-            System.out.println("----");
-//
-//            File rootFile = new File(url.getPath());
-//            List<File> files = listFiles(rootFile);
-//            files.forEach(file -> {
+                classesForPackage.forEach(cls -> {
+                    if (cls.isAnnotationPresent(Printer.class)) {
+                        Printer printerAnnotation = (Printer) cls.getAnnotation(Printer.class);
+                        System.out.println("Running: " + printerAnnotation.name());
+                        System.out.println("Purpose: " + printerAnnotation.purpose());
 
-                //                try {
-//                    Class<?> myClass = classLoader.loadClass(file.toString());
-//                    System.out.println(myClass.getCanonicalName());
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-        }
+                        for (Method method : cls.getDeclaredMethods()) {
+                            if (method.isAnnotationPresent(Print.class)) {
+                                Print printAnnotation = method.getAnnotation(Print.class);
 
-        //        Class<TrivialPrinter> printerClass = TrivialPrinter.class;
-//
-//        if (printerClass.isAnnotationPresent(Printer.class)) {
-//            Printer printerAnnotation = printerClass.getAnnotation(Printer.class);
-//            System.out.println("Running: " + printerAnnotation.name());
-//            System.out.println("Purpose: " + printerAnnotation.purpose());
-//
-//            for (Method method : printerClass.getDeclaredMethods()) {
-//                if (method.isAnnotationPresent(Print.class)) {
-//                    Print printAnnotation = method.getAnnotation(Print.class);
-//
-//                    if (printAnnotation.enabled()) {
-//                        try {
-//                            method.invoke(printerClass.newInstance());
-//                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
+                                if (printAnnotation.enabled()) {
+                                    try {
+                                        method.invoke(cls.newInstance());
+                                    } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
 //            }
-//        }
+        }
     }
 
-    private static List<File> listFiles(File root) throws IOException {
-        List<File> files = new ArrayList<>();
+    // Idea credit: http://stackoverflow.com/questions/10910510/get-a-array-of-class-files-inside-a-package-in-java
+    private static List<Class> getClassesForPackage(Package pkg) {
+        String pkgname = pkg.getName();
 
-        for (File file : root.listFiles()) {
-            if (file.isDirectory()) {
-                files.addAll(listFiles(file));
-            } else {
-                files.add(file);
+        List<Class> classes = new ArrayList<Class>();
+
+        File directory;
+        String fullPath;
+        String relPath = pkgname.replace('.', '/');
+
+        URL resource = ClassLoader.getSystemClassLoader().getResource(relPath);
+
+        if (resource == null) {
+//            System.out.println("No resource for " + relPath);
+            return emptyList();
+        }
+        fullPath = resource.getFile();
+
+        try {
+            directory = new File(resource.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(pkgname + " (" + resource + ") does not appear to be a valid URL / URI.  Strange, since we got it from the system...", e);
+        } catch (IllegalArgumentException e) {
+            directory = null;
+        }
+
+        if (directory != null && directory.exists()) {
+            for (String file : directory.list()) {
+                if (file.endsWith(".class")) {
+                    // removes the .class extension
+                    String className = pkgname + '.' + file.substring(0, file.length() - 6);
+
+                    try {
+                        classes.add(Class.forName(className));
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException("ClassNotFoundException loading " + className);
+                    }
+                }
+            }
+        } else {
+            try {
+                String jarPath = fullPath.replaceFirst("[.]jar[!].*", ".jar").replaceFirst("file:", "");
+                JarFile jarFile = new JarFile(jarPath);
+                Enumeration<JarEntry> entries = jarFile.entries();
+                while (entries.hasMoreElements()) {
+                    JarEntry entry = entries.nextElement();
+                    String entryName = entry.getName();
+                    if (entryName.startsWith(relPath) && entryName.length() > (relPath.length() + "/".length())) {
+                        String className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
+
+                        try {
+                            classes.add(Class.forName(className));
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException("ClassNotFoundException loading " + className);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+//                System.out.println(pkgname + " (" + directory + ") does not appear to be a valid package");
+                return emptyList();
             }
         }
 
-        return files;
+        return classes;
     }
 }
