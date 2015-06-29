@@ -44,36 +44,30 @@ public class PrinterRunner {
     }
 
     // Idea credit: http://stackoverflow.com/questions/10910510/get-a-array-of-class-files-inside-a-package-in-java
-    private static List<Class> getClassesForPackage(Package pkg) {
-        String pkgname = pkg.getName();
-
-        List<Class> classes = new ArrayList<Class>();
-
-        File directory;
-        String fullPath;
-        String relPath = pkgname.replace('.', '/');
-
-        URL resource = ClassLoader.getSystemClassLoader().getResource(relPath);
+    private static List<Class> getClassesForPackage(Package aPackage) {
+        String packageName = aPackage.getName();
+        List<Class> classes = new ArrayList<>();
+        String relativePath = packageName.replace('.', '/');
+        URL resource = ClassLoader.getSystemClassLoader().getResource(relativePath);
 
         if (resource == null) {
-            // System.out.println("No resource for " + relPath);
+            // System.out.println("No resource for " + relativePath);
             return emptyList();
         }
-        fullPath = resource.getFile();
 
+        File directory;
         try {
             directory = new File(resource.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(pkgname + " (" + resource + ") does not appear to be a valid URL / URI.  Strange, since we got it from the system...", e);
-        } catch (IllegalArgumentException e) {
-            directory = null;
+        } catch (URISyntaxException | IllegalArgumentException e) {
+            // System.out.println(packageName + " (" + resource + ") does not appear to be a valid URL / URI.  Strange, since we got it from the system...");
+            return emptyList();
         }
 
-        if (directory != null && directory.exists()) {
+        if (directory.exists()) {
             for (String file : directory.list()) {
                 if (file.endsWith(".class")) {
                     // removes the .class extension
-                    String className = pkgname + '.' + file.substring(0, file.length() - 6);
+                    String className = packageName + '.' + file.substring(0, file.length() - 6);
 
                     try {
                         classes.add(Class.forName(className));
@@ -83,27 +77,8 @@ public class PrinterRunner {
                 }
             }
         } else {
-            try {
-                String jarPath = fullPath.replaceFirst("[.]jar[!].*", ".jar").replaceFirst("file:", "");
-                JarFile jarFile = new JarFile(jarPath);
-                Enumeration<JarEntry> entries = jarFile.entries();
-                while (entries.hasMoreElements()) {
-                    JarEntry entry = entries.nextElement();
-                    String entryName = entry.getName();
-                    if (entryName.startsWith(relPath) && entryName.length() > (relPath.length() + "/".length())) {
-                        String className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
-
-                        try {
-                            classes.add(Class.forName(className));
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException("ClassNotFoundException loading " + className);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                // System.out.println(pkgname + " (" + directory + ") does not appear to be a valid package");
-                return emptyList();
-            }
+            // System.out.println(packageName + " (" + directory + ") does not appear to be a valid package");
+            return emptyList();
         }
 
         return classes;
