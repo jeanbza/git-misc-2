@@ -25,7 +25,6 @@ public class ProjectRunner {
                         if (field.isAnnotationPresent(DemoAutowired.class)) {
                             if (demoComponentClasses.containsKey(field.getType())) {
                                 try {
-                                    // @TJ is the man
                                     field.set(fooController, demoComponentClasses.get(field.getType()));
                                 } catch (IllegalAccessException e) {
                                     e.printStackTrace();
