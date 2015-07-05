@@ -1,7 +1,6 @@
 package com.foo;
 
-import com.bar.BarRepository;
-import org.junit.*;
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -12,7 +11,7 @@ public class DemoAutowiredTest {
 
         Package packaje = Package.getPackage("com.foo");
         Package[] packages = new Package[]{packaje};
-        AnnotationProcessor.processAnnotations(packages);
+        AnnotationProcessor.processAnnotations(packages, testController);
 
         assertThat(testController.talkToRepository(), equalTo("hello world"));
     }
@@ -22,7 +21,9 @@ public class DemoAutowiredTest {
         @DemoAutowired TestRepository testRepository;
 
         public String talkToRepository() {
-            return testRepository.testMethod();
+            System.out.println(testRepository);
+//            return testRepository.testMethod();
+            return "foo";
         }
     }
 

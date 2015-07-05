@@ -1,48 +1,37 @@
 package com.foo;
 
-import com.bar.BarRepository;
-import com.gaz.GazRepository;
-
-import java.io.*;
-import java.lang.reflect.*;
+import java.io.File;
+import java.lang.reflect.Field;
 import java.net.*;
 import java.util.*;
 
 import static java.util.Collections.emptyList;
 
 public class AnnotationProcessor {
-    private static Map<Class, Object> demoComponentClasses = collectDemoComponentClasses();
-
     public static void main(String[] args) {
-        Package[] packages = Package.getPackages();
-        processAnnotations(packages);
+        //        Package[] packages = Package.getPackages();
+        //        processAnnotations(packages, someClass);
     }
 
-    public static void processAnnotations(Package[] packages) {
-        FooController fooController = new FooController();
+    public static void processAnnotations(Package[] packages, Object classToAutowire) {
+        Map<Class, Object> demoRepositoryClasses = collectDemoRepositoryClasses();
 
-        for (Package p : packages) {
-            List<Class> classesForPackage = getClassesForPackage(p);
-
-            classesForPackage.forEach(cls -> {
-                if (cls.isAnnotationPresent(DemoController.class)) {
-                    for (Field field : cls.getDeclaredFields()) {
-                        if (field.isAnnotationPresent(DemoAutowired.class)) {
-                            if (demoComponentClasses.containsKey(field.getType())) {
-                                try {
-                                    field.set(fooController, demoComponentClasses.get(field.getType()));
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+        if (classToAutowire.getClass().isAnnotationPresent(DemoController.class)) {
+            for (Field field : classToAutowire.getClass().getDeclaredFields()) {
+                if (field.isAnnotationPresent(DemoAutowired.class)) {
+                    if (demoRepositoryClasses.containsKey(field.getType())) {
+                        try {
+                            field.set(classToAutowire, demoRepositoryClasses.get(field.getType()));
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
-            });
+            }
         }
     }
 
-    private static Map<Class, Object> collectDemoComponentClasses() {
+    private static Map<Class, Object> collectDemoRepositoryClasses() {
         Map<Class, Object> classInstances = new HashMap<>();
 
         for (Package p : Package.getPackages()) {
