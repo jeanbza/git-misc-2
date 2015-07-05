@@ -13,7 +13,7 @@ public class AnnotationProcessor {
         //        processAnnotations(packages, someClass);
     }
 
-    public static void processAnnotations(Package[] packages, Object classToAutowire) {
+    public static void processAnnotations(Object classToAutowire) {
         Map<Class, Object> demoRepositoryClasses = collectDemoRepositoryClasses();
 
         if (classToAutowire.getClass().isAnnotationPresent(DemoController.class)) {
