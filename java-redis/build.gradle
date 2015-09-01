@@ -1,20 +1,17 @@
-apply plugin: 'java'
+apply plugin: 'application'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+  compile('redis.clients:jedis:2.7.2')
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'Main'
-    }
-}
+mainClassName = "Main"
 
 defaultTasks 'clean', 'build'
