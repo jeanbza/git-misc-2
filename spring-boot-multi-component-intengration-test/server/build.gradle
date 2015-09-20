@@ -21,6 +21,7 @@ repositories {
 }
 
 String springBootVersion = '1.2.6.RELEASE'
+String springVersion = '4.1.0.RELEASE'
 
 dependencies {
     compile(
@@ -28,5 +29,11 @@ dependencies {
 
         project(':component_1'),
         project(':component_2'),
+    )
+
+    testCompile(
+        'junit:junit:4.11',
+        "com.jayway.restassured:rest-assured:2.5.0",
+        "org.springframework:spring-test:$springVersion",
     )
 }
