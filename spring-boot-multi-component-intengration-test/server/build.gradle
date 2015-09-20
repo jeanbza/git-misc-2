@@ -20,9 +20,6 @@ repositories {
     mavenCentral()
 }
 
-String springBootVersion = '1.2.6.RELEASE'
-String springVersion = '4.2.0.RELEASE'
-
 dependencies {
     compile(
         "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
