@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+    ext {
+        springBootVersion = '1.2.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+String springBootVersion = '1.2.6.RELEASE'
+
+dependencies {
+    compile(
+        "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
+
+        project(':component_1'),
+        project(':component_2'),
+    )
+}
