@@ -14,5 +14,6 @@ dependencies {
     compile(
         'com.gemstone.gemfire:gemfire:8.2.0',
         'org.springframework.data:spring-data-gemfire:1.7.0.RELEASE',
+        'org.yaml:snakeyaml:1.16'
     )
 }

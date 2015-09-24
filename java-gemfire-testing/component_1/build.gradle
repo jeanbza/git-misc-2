@@ -20,6 +20,7 @@ dependencies {
     )
 
     testCompile(
+        'org.springframework:spring-test:4.2.0.RELEASE',
         'junit:junit:4.11',
         'org.hamcrest:hamcrest-library:1.3',
     )

@@ -11,12 +11,12 @@ public class GemfireConnectionUtil {
     // app booting, and once by the integration test) - and there can only be one proxy per context
     public static Map<String, Region> regionCache = new ConcurrentHashMap<>();
 
-    public static <K, V> Region getRegionConnection(String regionName) {
+    public static <K, V> Region getRegionConnection(String regionName, String host, int port) {
         if (regionCache.containsKey(regionName)) {
             return regionCache.get(regionName);
         } else {
             ClientCacheFactory clientCacheFactory = new ClientCacheFactory();
-            clientCacheFactory.addPoolLocator("localhost", 10334);
+            clientCacheFactory.addPoolLocator(host, port);
             ClientCache clientCache = clientCacheFactory.create();
             ClientRegionFactory<K, V> regionFactory = clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY);
 

@@ -18,20 +18,20 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
 public class ComponentsIntegrationTest {
-    @Value("${local.server.port}")
-    private int port;
+    @Value("${local.server.port}") private int port;
 
-    private static Region<String, Long> fooRegion;
+    // Here we can use @Value because we set up the @SpringApplicationConfiguration. Since our unit tests already use
+    // test.yml, it may be worth switching this to do the same to avoid a test.yml + application-test.yml situation
+    @Value("${gemfire.locator.host}") private String gemfireLocatorHost;
+    @Value("${gemfire.locator.port}") private String gemfireLocatorPort;
 
-    @BeforeClass
-    public static void beforeClass() {
-        fooRegion = getRegionConnection("FooRegion");
-    }
+    private Region<String, Long> fooRegion;
 
     @Before
     public void setUp() {
         RestAssured.port = port;
 
+        fooRegion = getRegionConnection("FooRegion", gemfireLocatorHost, Integer.valueOf(gemfireLocatorPort));
         emptyRegion(fooRegion);
     }
 
