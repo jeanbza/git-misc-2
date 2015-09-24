@@ -13,17 +13,12 @@ import java.util.List;
 public class FooController {
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
-    private FooRegionRepository fooRegionRepository;
-
-    @Autowired
-    public FooController(FooRegionRepository fooRegionRepository) {
-        this.fooRegionRepository = fooRegionRepository;
-    }
+    @Autowired private FooRegionRepository fooRegionRepository;
 
     @RequestMapping(value = "/foo", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getUsers() throws JsonProcessingException {
-        List<Long> allFooRegionValues = fooRegionRepository.getAll();
+        List<Long> allFooRegionValues = fooRegionRepository.getAllValues();
 
         return jsonMapper.writeValueAsString(allFooRegionValues);
     }

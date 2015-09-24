@@ -5,9 +5,10 @@ import org.junit.*;
 
 import java.util.List;
 
+import static demo.GemfireConnectionUtil.getRegionConnection;
+import static demo.GemfireTestingUtil.emptyRegion;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static testing.GemfireTestingUtil.*;
 
 public class FooRegionRepositoryTest {
     private static Region<String, Long> fooRegion;
@@ -16,13 +17,12 @@ public class FooRegionRepositoryTest {
 
     @BeforeClass
     public static void beforeClass() {
-        fooRegion = getRegionConnection("FooRegion", String.class, Long.class);
+        fooRegion = getRegionConnection("FooRegion");
     }
 
     @Before
     public void setup() {
-        repository = new FooRegionRepository();
-        repository.setFooRegion(fooRegion);
+        repository = new FooRegionRepository(fooRegion);
 
         emptyRegion(fooRegion);
     }
@@ -33,7 +33,7 @@ public class FooRegionRepositoryTest {
         fooRegion.put("world", 11L);
         fooRegion.put("etc", 14L);
 
-        List<Long> allValues = repository.getAll();
+        List<Long> allValues = repository.getAllValues();
 
         assertThat(allValues, containsInAnyOrder(3L, 11L, 14L));
     }
