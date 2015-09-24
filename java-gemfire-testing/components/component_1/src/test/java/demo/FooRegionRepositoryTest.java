@@ -2,10 +2,6 @@ package demo;
 
 import com.gemstone.gemfire.cache.Region;
 import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
@@ -14,8 +10,6 @@ import static demo.GemfireTestingUtil.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = FooRegionRepositoryTest.class, initializers = ConfigFileApplicationContextInitializer.class)
 public class FooRegionRepositoryTest {
     private Region<String, Long> fooRegion;
 
