@@ -2,6 +2,7 @@ package demo;
 
 import com.gemstone.gemfire.cache.Region;
 import com.gemstone.gemfire.cache.client.*;
+import com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,6 +18,11 @@ public class GemfireConnectionUtil {
         } else {
             ClientCacheFactory clientCacheFactory = new ClientCacheFactory();
             clientCacheFactory.addPoolLocator(host, port);
+
+            ReflectionBasedAutoSerializer ser = new ReflectionBasedAutoSerializer("demo.User");
+            clientCacheFactory.setPdxReadSerialized(false);
+            clientCacheFactory.setPdxSerializer(ser);
+
             ClientCache clientCache = clientCacheFactory.create();
             ClientRegionFactory<K, V> regionFactory = clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY);
 

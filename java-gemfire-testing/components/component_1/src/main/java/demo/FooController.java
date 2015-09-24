@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static java.util.Arrays.asList;
 
 @Controller
 public class FooController {
@@ -18,8 +18,8 @@ public class FooController {
     @RequestMapping(value = "/foo", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getUsers() throws JsonProcessingException {
-        List<Long> allFooRegionValues = fooRegionRepository.getAllValues();
+//        List<Long> allFooRegionValues = fooRegionRepository.getAllValues();
 
-        return jsonMapper.writeValueAsString(allFooRegionValues);
+        return jsonMapper.writeValueAsString(asList(1, 2, 3));
     }
 }

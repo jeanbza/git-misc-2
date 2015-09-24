@@ -11,23 +11,24 @@ public class GemfireTestingUtil {
     private static Map<String, String> map = getEnv();
 
     private static Map<String, String> getEnv() {
-        try {
-            byte[] encoded = Files.readAllBytes(Paths.get("gemfire-test.yml"));
-            String manifest = new String(encoded, "UTF-8");
-
-            System.out.println("Manifest file read:");
-            System.out.println(manifest);
-
-            Yaml yaml = new Yaml();
-            Map map = (Map) yaml.load(manifest);
-            return map;
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(0);
-
-            // no-op
-            return null;
-        }
+//        try {
+//            byte[] encoded = Files.readAllBytes(Paths.get("gemfire-test.yml"));
+//            String manifest = new String(encoded, "UTF-8");
+//
+//            System.out.println("Manifest file read:");
+//            System.out.println(manifest);
+//
+//            Yaml yaml = new Yaml();
+//            Map map = (Map) yaml.load(manifest);
+//            return map;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.exit(0);
+//
+//            // no-op
+//            return null;
+//        }
+        return null;
     }
 
     public static String gemfireLocatorHost() {
