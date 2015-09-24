@@ -13,7 +13,7 @@
 ## Running tests (kind of the point of this thing!)
 
 1. `bin/gemfire.sh start`
-1. `./gradlew test`
+1. `./gradlew clean test`
 1. `bin/gemfire.sh stop`
 
 ## Running the app

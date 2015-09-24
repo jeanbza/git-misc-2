@@ -30,7 +30,7 @@ public class FooRegionRepositoryTest {
     }
 
     @Test
-    public void testGetAll() throws Exception {
+    public void testGetAll() {
         fooRegion.put("hello", 3L);
         fooRegion.put("world", 11L);
         fooRegion.put("etc", 14L);
