@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+    ext {
+        springBootVersion = '1.2.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-release'
+    }
+}
+
+dependencies {
+    compile(
+        "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
+
+//        'org.springframework.data:spring-data-gemfire:1.7.0.RELEASE',
+//        'com.gemstone.gemfire:gemfire:8.2.0',
+
+//        project(':component_1'),
+//        project(':component_2'),
+    )
+
+    testCompile(
+//        project(':utils'),
+
+        'junit:junit:4.11',
+        "com.jayway.restassured:rest-assured:2.5.0",
+        "org.springframework:spring-test:$springVersion",
+    )
+}
