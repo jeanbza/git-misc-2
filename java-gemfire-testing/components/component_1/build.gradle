@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     compile(
-        project(':utils'),
+        project(':components/utils'),
 
         'com.gemstone.gemfire:gemfire:8.2.0',
 

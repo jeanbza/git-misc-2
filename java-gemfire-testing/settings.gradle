@@ -1,1 +1,1 @@
-include 'component_1', 'component_2', 'utils', 'server'
+include 'components/component_1', 'components/component_2', 'components/utils', 'server'

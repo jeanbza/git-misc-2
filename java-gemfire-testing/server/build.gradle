@@ -30,13 +30,12 @@ dependencies {
         'org.springframework.data:spring-data-gemfire:1.7.0.RELEASE',
         'com.gemstone.gemfire:gemfire:8.2.0',
 
-        project(':utils'),
-        project(':component_1'),
-        project(':component_2'),
+        project(':components/utils'),
+        project(':components/component_1'),
+        project(':components/component_2'),
     )
 
     testCompile(
-
         'junit:junit:4.11',
         "com.jayway.restassured:rest-assured:2.5.0",
         "org.springframework:spring-test:$springVersion",
