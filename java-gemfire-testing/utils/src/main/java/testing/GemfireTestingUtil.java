@@ -3,7 +3,7 @@ package testing;
 import com.gemstone.gemfire.cache.Region;
 import com.gemstone.gemfire.cache.client.*;
 
-public class GemfireConfig {
+public class GemfireTestingUtil {
     public static Region getRegionConnection(String regionName, Class keyClass, Class valueClass) {
         ClientCacheFactory ccf = new ClientCacheFactory();
         ccf.addPoolLocator("localhost", 10334);

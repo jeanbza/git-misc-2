@@ -2,14 +2,12 @@ package demo;
 
 import com.gemstone.gemfire.cache.Region;
 import org.junit.*;
-import org.springframework.context.annotation.DependsOn;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static testing.GemfireConfig.emptyRegion;
-import static testing.GemfireConfig.getRegionConnection;
+import static testing.GemfireTestingUtil.*;
 
 public class FooRegionRepositoryTest {
     private static Region<String, Long> fooRegion;
@@ -22,7 +20,6 @@ public class FooRegionRepositoryTest {
     }
 
     @Before
-    @DependsOn("gemfireCache")
     public void setup() {
         repository = new FooRegionRepository();
         repository.setFooRegion(fooRegion);
