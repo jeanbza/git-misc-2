@@ -8,7 +8,9 @@ if [ "$1" == 'start' ]; then
   cd /tmp/gemfire;
   gfsh start locator --name=LocatorX --bind-address=localhost --port=10334;
   gfsh start server --name=ServerA --locators=localhost[10334];
-  gfsh -e "connect" -e "create region --type=REPLICATE --name=SomeRegion"
+  gfsh -e "connect" -e "create region --type=REPLICATE --name=FooRegion";
+  gfsh -e "connect" -e "put --key=abc --value=5 --region=FooRegion";
+  gfsh -e "connect" -e "put --key=xyz --value=9 --region=FooRegion";
   gfsh -e "connect" -e "list members" -e "list regions";
   popd;
 
