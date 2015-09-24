@@ -21,7 +21,8 @@ public class ComponentsIntegrationTest {
     @Value("${local.server.port}") private int port;
 
     // Here we can use @Value because we set up the @SpringApplicationConfiguration. Since our unit tests already use
-    // test.yml, it may be worth switching this to do the same to avoid a test.yml + application-test.yml situation
+    // test.yml, it may be worth switching this to do the same to avoid a test.yml + application-test.yml situation. It
+    // would also allow us to use @BeforeClass - @Value cannot be static
     @Value("${gemfire.locator.host}") private String gemfireLocatorHost;
     @Value("${gemfire.locator.port}") private String gemfireLocatorPort;
 
