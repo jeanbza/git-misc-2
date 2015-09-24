@@ -5,8 +5,15 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-release'
+    }
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile(
+        'com.gemstone.gemfire:gemfire:8.2.0',
+
+        "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
+    )
 }
