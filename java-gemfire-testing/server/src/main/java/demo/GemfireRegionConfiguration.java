@@ -7,14 +7,14 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 
 @Configuration
 public class GemfireRegionConfiguration {
-    @Bean(name = "Someregion")
+    @Bean(name = "SomeRegion")
     @DependsOn("gemfireCache")
-    public <String, Long> ClientRegionFactoryBean<String, Long> someregion(ClientCache gemfireCache, RegionAttributes<String, Long> regionAttributes) {
+    public <String, Long> ClientRegionFactoryBean<String, Long> someRegion(ClientCache gemfireCache, RegionAttributes<String, Long> regionAttributes) {
         ClientRegionFactoryBean<String, Long> clientRegionFactoryBean = new ClientRegionFactoryBean<>();
 
         clientRegionFactoryBean.setAttributes(regionAttributes);
         clientRegionFactoryBean.setCache(gemfireCache);
-        clientRegionFactoryBean.setName("Someregion");
+        clientRegionFactoryBean.setName("SomeRegion");
         clientRegionFactoryBean.setShortcut(ClientRegionShortcut.PROXY);
 
         return clientRegionFactoryBean;
