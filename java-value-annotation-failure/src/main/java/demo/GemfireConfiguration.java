@@ -21,15 +21,7 @@ public class GemfireConfiguration {
     private String gemfirePort = "10334";
 
     @Bean
-    public CacheManager cacheManager(GemFireCache gemfireCache) {
-        GemfireCacheManager cacheManager = new GemfireCacheManager();
-        cacheManager.setCache((Cache) gemfireCache);
-
-        return cacheManager;
-    }
-
-    @Bean
-    public Properties gemfireSettings() {
+    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         Properties gemfireSettings = new Properties();
 
         gemfireSettings.setProperty("app.gemfire.default.log-level", "config");
@@ -41,23 +33,29 @@ public class GemfireConfiguration {
         gemfireSettings.setProperty("app.gemfire.default.region.initial-capacity", "101");
         gemfireSettings.setProperty("app.gemfire.default.region.load-factor", "0.75");
 
-        return gemfireSettings;
-    }
-
-    @Bean
-    public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer(@Qualifier("gemfireSettings") Properties placeholders) {
         PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
-        propertyPlaceholderConfigurer.setProperties(placeholders);
+        propertyPlaceholderConfigurer.setProperties(gemfireSettings);
 
         return propertyPlaceholderConfigurer;
     }
 
     @Bean
-    public Properties gemfireProperties() {
+    public ClientCacheFactoryBean gemfireCache() {
         Properties gemfireProperties = new Properties();
         gemfireProperties.setProperty("name", "SpringGemFireCacheClient");
 
-        return gemfireProperties;
+        ClientCacheFactoryBean clientCacheFactoryBean = new ClientCacheFactoryBean();
+        clientCacheFactoryBean.setProperties(gemfireProperties);
+
+        return clientCacheFactoryBean;
+    }
+
+    @Bean
+    public CacheManager cacheManager(GemFireCache gemfireCache) {
+        GemfireCacheManager cacheManager = new GemfireCacheManager();
+        cacheManager.setCache((Cache) gemfireCache);
+
+        return cacheManager;
     }
 
     @Bean(name = GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME)
@@ -66,24 +64,6 @@ public class GemfireConfiguration {
         poolFactoryBean.setLocators(asCollection(new InetSocketAddress(gemfireHostname, Integer.valueOf(gemfirePort))));
 
         return poolFactoryBean;
-    }
-
-    @Bean
-    public ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
-        ClientCacheFactoryBean clientCacheFactoryBean = new ClientCacheFactoryBean();
-        clientCacheFactoryBean.setProperties(gemfireProperties);
-
-        return clientCacheFactoryBean;
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RegionAttributesFactoryBean exampleRegionAttributes() {
-        RegionAttributesFactoryBean regionAttributesFactoryBean = new RegionAttributesFactoryBean();
-        regionAttributesFactoryBean.setKeyConstraint(String.class);
-        regionAttributesFactoryBean.setValueConstraint(Long.class);
-
-        return regionAttributesFactoryBean;
     }
 
     protected Collection<InetSocketAddress> asCollection(InetSocketAddress... socketAddresses) {
