@@ -38,6 +38,6 @@ public class ProductFilter {
             .filter(pricePredicate)
             .filter(weightPredicate)
             .map(idMapper)
-            .forEach(p -> productConsumer.accept(p));
+            .forEach(productConsumer::accept);
     }
 }
