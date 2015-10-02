@@ -5,7 +5,6 @@ import model.Product;
 import java.util.List;
 import java.util.function.*;
 
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 public class ProductFilter {
@@ -16,10 +15,10 @@ public class ProductFilter {
             .collect(toList());
     }
 
-    public List<Product> filterWithPredicate(
-        List<Product> allProducts,
-        Predicate<Product> pricePredicate,
-        Predicate<Product> weightPredicate
+    public static <X> List<X> filterWithPredicate(
+        List<X> allProducts,
+        Predicate<X> pricePredicate,
+        Predicate<X> weightPredicate
     ) {
         return allProducts.stream()
             .filter(pricePredicate)
@@ -27,12 +26,12 @@ public class ProductFilter {
             .collect(toList());
     }
 
-    public void filterWithFunction(
-        List<Product> allProducts,
-        Predicate<Product> pricePredicate,
-        Predicate<Product> weightPredicate,
-        Function<Product, String> idMapper,
-        Consumer<String> productConsumer
+    public static <X, Y> void filterWithFunction(
+        List<X> allProducts,
+        Predicate<X> pricePredicate,
+        Predicate<X> weightPredicate,
+        Function<X, Y> idMapper,
+        Consumer<Y> productConsumer
     ) {
         allProducts.stream()
             .filter(pricePredicate)

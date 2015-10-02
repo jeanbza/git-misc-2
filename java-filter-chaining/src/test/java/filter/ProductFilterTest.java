@@ -5,6 +5,8 @@ import org.junit.*;
 
 import java.util.*;
 
+import static filter.ProductFilter.filterWithFunction;
+import static filter.ProductFilter.filterWithPredicate;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,7 +42,7 @@ public class ProductFilterTest {
             new Product("b", 4L, 1000L)
         );
 
-        List<Product> result = productFilter.filterWithPredicate(
+        List<Product> result = filterWithPredicate(
             products,
             p -> p.getPrice() < 10L,
             p -> p.getWeight() < 100L
@@ -61,7 +63,7 @@ public class ProductFilterTest {
 
         List<String> result = new ArrayList<>();
 
-        productFilter.filterWithFunction(
+        filterWithFunction(
             products,
             p -> p.getPrice() < 10L,
             p -> p.getWeight() < 100L,
