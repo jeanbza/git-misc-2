@@ -1,6 +1,6 @@
 package filter;
 
-import model.Product;
+import model.*;
 import org.junit.*;
 
 import java.util.*;
@@ -49,6 +49,25 @@ public class ProductFilterTest {
 
         assertThat(result, equalTo(asList(
             new Product("a", 2L, 10L)
+        )));
+    }
+
+    @Test
+    public void testFilterWithPredicate_DifferentObject() throws Exception {
+        List<Person> people = asList(
+            new Person("a", 3),
+            new Person("b", 13),
+            new Person("c", 23)
+        );
+
+        List<Person> teenagers = filterWithPredicate(
+            people,
+            p -> p.getAge() < 21,
+            p -> p.getAge() > 12
+        );
+
+        assertThat(teenagers, equalTo(asList(
+            new Person("b", 13)
         )));
     }
 

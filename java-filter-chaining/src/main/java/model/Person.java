@@ -2,26 +2,26 @@ package model;
 
 public class Person {
     private String id;
-    private boolean hasOutdoorActivities;
+    private int age;
 
-    public Person(String id, boolean hasOutdoorActivities) {
+    public Person(String id, int age) {
         this.id = id;
-        this.hasOutdoorActivities = hasOutdoorActivities;
+        this.age = age;
     }
 
     public String getId() {
         return id;
     }
 
-    public boolean hasOutdoorActivities() {
-        return hasOutdoorActivities;
+    public int getAge() {
+        return age;
     }
 
     @Override
     public String toString() {
         return "Person{" +
             "id='" + id + '\'' +
-            ", hasOutdoorActivities=" + hasOutdoorActivities +
+            ", age=" + age +
             '}';
     }
 
@@ -34,7 +34,7 @@ public class Person {
 
         Person person = (Person) o;
 
-        if (hasOutdoorActivities != person.hasOutdoorActivities)
+        if (age != person.age)
             return false;
         return !(id != null ? !id.equals(person.id) : person.id != null);
 
@@ -43,7 +43,7 @@ public class Person {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (hasOutdoorActivities ? 1 : 0);
+        result = 31 * result + age;
         return result;
     }
 }
