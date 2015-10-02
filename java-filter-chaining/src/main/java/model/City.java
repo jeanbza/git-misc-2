@@ -1,29 +1,27 @@
 package model;
 
-import java.util.List;
-
 public class City {
     private String id;
-    private List<Person> people;
+    private boolean hasOutdoorActivities;
 
-    public City(String id, List<Person> people) {
+    public City(String id, boolean hasOutdoorActivities) {
         this.id = id;
-        this.people = people;
+        this.hasOutdoorActivities = hasOutdoorActivities;
     }
 
     public String getId() {
         return id;
     }
 
-    public List<Person> getPeople() {
-        return people;
+    public boolean hasOutdoorActivities() {
+        return hasOutdoorActivities;
     }
 
     @Override
     public String toString() {
         return "City{" +
             "id='" + id + '\'' +
-            ", people=" + people +
+            ", hasOutdoorActivities=" + hasOutdoorActivities +
             '}';
     }
 
@@ -36,16 +34,16 @@ public class City {
 
         City city = (City) o;
 
-        if (id != null ? !id.equals(city.id) : city.id != null)
+        if (hasOutdoorActivities != city.hasOutdoorActivities)
             return false;
-        return !(people != null ? !people.equals(city.people) : city.people != null);
+        return !(id != null ? !id.equals(city.id) : city.id != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (people != null ? people.hashCode() : 0);
+        result = 31 * result + (hasOutdoorActivities ? 1 : 0);
         return result;
     }
 }
