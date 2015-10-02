@@ -3,7 +3,7 @@ package filter;
 import model.Product;
 import org.junit.*;
 
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -49,5 +49,26 @@ public class ProductFilterTest {
         assertThat(result, equalTo(asList(
             new Product("a", 2L, 10L)
         )));
+    }
+
+    @Test
+    public void testFilterWithFunction() throws Exception {
+        List<Product> products = asList(
+            new Product("a", 2L, 10L),
+            new Product("b", 20L, 100L),
+            new Product("b", 4L, 1000L)
+        );
+
+        List<String> result = new ArrayList<>();
+
+        productFilter.filterWithFunction(
+            products,
+            p -> p.getPrice() < 10L,
+            p -> p.getWeight() < 100L,
+            p -> p.getId(),
+            p -> result.add(p)
+        );
+
+        assertThat(result, equalTo(asList("a")));
     }
 }
