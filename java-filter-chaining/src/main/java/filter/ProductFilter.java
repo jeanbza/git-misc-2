@@ -26,6 +26,19 @@ public class ProductFilter {
             .collect(toList());
     }
 
+    public static <X> List<X> filterWithVarargPredicates(
+        List<X> allProducts,
+        Predicate<X>... predicates
+    ) {
+        for (Predicate<X> predicate : predicates) {
+            allProducts = allProducts.stream()
+                .filter(predicate)
+                .collect(toList());
+        }
+
+        return allProducts;
+    }
+
     public static <X, Y> void filterWithFunction(
         List<X> allProducts,
         Predicate<X> pricePredicate,

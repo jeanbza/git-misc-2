@@ -5,8 +5,7 @@ import org.junit.*;
 
 import java.util.*;
 
-import static filter.ProductFilter.filterWithFunction;
-import static filter.ProductFilter.filterWithPredicate;
+import static filter.ProductFilter.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -50,6 +49,41 @@ public class ProductFilterTest {
 
         assertThat(result, equalTo(asList(
             new Product("a", 2L, 10L)
+        )));
+    }
+
+    @Test
+    public void testFilterWithVarargPredicates() throws Exception {
+        List<Product> products = asList(
+            new Product("a", 2L, 10L),
+            new Product("b", 20L, 100L),
+            new Product("c", 80L, 40L),
+            new Product("d", 4L, 1000L)
+        );
+
+        List<Product> result = filterWithVarargPredicates(
+            products,
+            p -> p.getPrice() < 10L,
+            p -> p.getPrice() < 90L,
+            p -> p.getPrice() < 80L,
+            p -> p.getPrice() < 70L,
+            p -> p.getWeight() < 100L
+        );
+
+        assertThat(result, equalTo(asList(
+            new Product("a", 2L, 10L)
+        )));
+
+        List<Product> newResult = filterWithVarargPredicates(
+            products,
+            p -> p.getPrice() < 100L,
+            p -> p.getPrice() < 90L,
+            p -> p.getWeight() < 100L
+        );
+
+        assertThat(newResult, equalTo(asList(
+            new Product("a", 2L, 10L),
+            new Product("c", 80L, 40L)
         )));
     }
 
