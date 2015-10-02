@@ -67,8 +67,8 @@ public class ProductFilterTest {
             products,
             p -> p.getPrice() < 10L,
             p -> p.getWeight() < 100L,
-            p -> p.getId(),
-            p -> result.add(p)
+            Product::getId,
+            result::add
         );
 
         assertThat(result, equalTo(asList("a")));
