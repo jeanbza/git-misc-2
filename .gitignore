@@ -4,3 +4,4 @@
 *.class
 *build/
 .gradle/
+*/node_modules/
