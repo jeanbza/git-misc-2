@@ -5,3 +5,5 @@
 *build/
 .gradle/
 */node_modules/
+npm-debug.log
+*/karma_html
