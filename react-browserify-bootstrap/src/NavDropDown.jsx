@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import 'bootstrap'
 
-export default class HelloWorld extends Component {
+export default class NavDropDown extends Component {
     render() {
         return (
             <nav className="navbar navbar-default">
