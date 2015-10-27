@@ -1,9 +1,3 @@
 .navbar-toggle {
     float: left;
 }
-
-@media (min-width: 0) {
-    .navbar-toggle {
-        display: block; /* force showing the toggle */
-    }
-}
