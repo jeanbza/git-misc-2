@@ -22,16 +22,20 @@
     },
     "browser": {
         "jquery": "./node_modules/jquery/dist/jquery.js",
-        "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
-        "jasny-bootstrap": "./node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.js"
+        "bootstrap-transition": "./node_modules/bootstrap/js/transition.js",
+        "bootstrap-collapse": "./node_modules/bootstrap/js/collapse.js",
+        "jasny-offcanvas": "./node_modules/jasny-bootstrap/js/offcanvas.js"
     },
     "browserify-shim": {
         "jquery": "$",
-        "bootstrap": {
+        "bootstrap-transition": {
             "depends": ["jquery"]
         },
-        "jasny-bootstrap": {
-            "depends": ["jquery", "bootstrap"]
+        "bootstrap-collapse": {
+            "depends": ["jquery", "bootstrap-transition"]
+        },
+        "jasny-offcanvas": {
+            "depends": ["jquery", "bootstrap-transition"]
         }
     },
     "browserify": {

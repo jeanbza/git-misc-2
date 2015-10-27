@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import 'bootstrap'
+import 'bootstrap-collapse'
 
 export default class NavDropDown extends Component {
     render() {
