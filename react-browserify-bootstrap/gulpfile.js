@@ -8,27 +8,37 @@ var babelify = require('babelify')
 var source = require('vinyl-source-stream')
 var buffer = require('vinyl-buffer')
 
-gulp.task('browserify:js', ['clean:js'], function() {
-    var extensions = ['.js', '.json', '.es6', '.jsx']
-    var opts = {
-        debug: true,
-        fullPaths: true,
-        extensions: extensions
-    }
+const extensions = ['.js', '.json', '.es6', '.jsx']
+const browserifyOpts = {
+    debug: true,
+    fullPaths: true,
+    extensions: extensions
+}
+const babelifyOpts = {
+    extensions: extensions,
+    compact: false
+}
 
-    return browserify(opts)
-        .transform(babelify.configure({
-            extensions: extensions,
-            compact: false
-        }))
-        .require('./src/app.js', {entry: true})
+gulp.task('browserify:dropdown', [], function() {
+    return browserify(browserifyOpts)
+        .transform(babelify.configure(babelifyOpts))
+        .require('./src/app-dropdown.js', {entry: true})
         .bundle()
-        .pipe(source('./app.js'))
+        .pipe(source('./app-dropdown.js'))
         .pipe(gulp.dest('dist/js'))
-});
+})
+
+gulp.task('browserify:pushright', [], function() {
+    return browserify(browserifyOpts)
+        .transform(babelify.configure(babelifyOpts))
+        .require('./src/app-pushright.js', {entry: true})
+        .bundle()
+        .pipe(source('./app-pushright.js'))
+        .pipe(gulp.dest('dist/js'))
+})
 
 gulp.task('clean:js', function() {
     return del(['dist/js/*', 'dist/js'])
 })
 
-gulp.task('default', ['clean:js', 'browserify:js'])
+gulp.task('default', ['clean:js', 'browserify:dropdown', 'browserify:pushright'])
