@@ -1,5 +1,5 @@
 require 'sinatra'
 
-get '/some_endpoint' do
-  'Hello World!'
+get '/number_generator' do
+  '5'
 end
