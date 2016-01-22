@@ -2,6 +2,7 @@ require_relative '../spec_helper'
 
 describe 'the app' do
   it 'does something' do
-    HTTParty.get('http://localhost:8080/some_endpoint')
+    get '/some_endpoint'
+    expect(last_response).to be_ok
   end
 end

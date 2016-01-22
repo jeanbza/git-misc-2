@@ -17,9 +17,9 @@ module RSpecMixin
   end
 end
 
-Spec::Runner.configure do |config|
-  config.include RSpecMixin
-end
+# Spec::Runner.configure do |config|
+#   config.include RSpecMixin
+# end
 
 RSpec.configure do |config|
   config.filter_run :focus
