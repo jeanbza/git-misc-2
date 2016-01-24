@@ -1,3 +1,3 @@
-require_relative 'simulator_joiner'
+require_relative './simulator_joiner'
 
 SimulatorJoiner.run!
